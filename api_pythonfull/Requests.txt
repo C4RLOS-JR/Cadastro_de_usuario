@@ -1,0 +1,4 @@
+Bibliotécas necessárias:
+→ fastapi
+→ sqlalchemy
+→ uvicorn
