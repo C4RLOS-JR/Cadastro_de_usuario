@@ -11,9 +11,28 @@ app = FastAPI()
 def conectaBanco():
   engine = create_engine('sqlite:///sqlite.db', echo=False)
   Session = sessionmaker(bind=engine)
-  session = Session()
-  return session
+  return Session()
 
 @app.post('/cadastro')
 def cadastro(usuario: str, email: str, senha: str):
-  ...
+  if len(senha) < 6:
+    return {'msg': 1}
+  
+  session = conectaBanco()
+  usuarioExiste = session.query(Pessoa).filter_by(email=email, senha=senha).all()
+
+  if usuarioExiste:
+    return {'msg': 2}
+
+  try:
+    novoUsuario = Pessoa(usuario=usuario,
+                         email=email,
+                         senha=senha)
+    session.add(novoUsuario)
+    session.commit()
+    return {'msg': 0}
+  except Exception as erro:
+    return {'msg': 3, 'msg': erro}
+
+if __name__ == '__main__':
+  uvicorn.run('controller:app', port=5000, reload=True, access_log=False)
