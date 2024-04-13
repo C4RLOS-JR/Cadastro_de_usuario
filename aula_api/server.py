@@ -5,3 +5,5 @@ def app(amb, start_response):
   response_headers = [('Content-type', 'text/html')]
   start_response(status, response_headers)
   return [data]
+
+# gunicorn server:app -b 127.0.0.1:5002

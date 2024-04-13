@@ -8,6 +8,18 @@ import uvicorn
 
 app = FastAPI()
 
+# cors fastapi (policy) → https://fastapi.tiangolo.com/tutorial/cors/
+# origins = ['*'] # '*' → todos podem fazer requisição
+origins = ['http://127.0.0.1:5002']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 def conectaBanco():
   engine = create_engine('sqlite:///sqlite.db', echo=False)
   Session = sessionmaker(bind=engine)
