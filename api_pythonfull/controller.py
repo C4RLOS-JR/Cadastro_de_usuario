@@ -5,6 +5,7 @@ from models import Base, Pessoa
 from secrets import token_hex
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from hashlib import sha256
 
 app = FastAPI()
 
@@ -30,6 +31,7 @@ def cadastro(usuario: str, email: str, senha: str):
   if len(senha) < 6:
     return {'msg': 1}
   
+  senha = sha256(senha.encode()).hexdigest()
   session = conectaBanco()
   usuarioExiste = session.query(Pessoa).filter_by(email=email, senha=senha).all()
 
