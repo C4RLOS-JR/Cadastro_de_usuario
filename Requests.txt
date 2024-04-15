@@ -1,5 +1,2 @@
 Bibliotécas necessárias:
-→ fastapi
-→ sqlalchemy
-→ uvicorn
-→ gunicorn
+→ fastapi sqlalchemy uvicorn gunicorn

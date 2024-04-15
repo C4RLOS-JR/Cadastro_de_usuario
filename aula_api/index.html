@@ -44,6 +44,7 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.jss"></script> -->
 
     <script>
+      var mensagem;
 
       function cadastrar() {
         var usuario = document.getElementById('usuario').value;
@@ -56,6 +57,16 @@
           method: 'post',
           success: function (resposta) {
             console.log(resposta)
+
+            if (resposta['msg'] == 0){
+              mensagem = 'Usuário cadastrado com sucesso!'
+            } else if (resposta['msg'] == 1){
+              mensagem = 'A senha tem que conter mais de 6 digitos!'
+            } else if (resposta['msg'] == 2){
+              mensagem = 'Usuário já cadastrado no sistema!'
+            } else if (resposta['msg'] == 3) {
+              mensagem = 'Erro interno do sistema! → ' + resposta['erro']
+            }
           }
         })
       }

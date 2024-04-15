@@ -46,7 +46,7 @@ def cadastro(usuario: str, email: str, senha: str):
     session.commit()
     return {'msg': 0}
   except Exception as erro:
-    return {'msg': 3, 'msg': erro}
+    return {'msg': 3, 'erro': erro}
 
 if __name__ == '__main__':
   uvicorn.run('controller:app', port=5000, reload=True, access_log=False)
