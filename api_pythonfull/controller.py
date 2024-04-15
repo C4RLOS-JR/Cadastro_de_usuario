@@ -11,7 +11,7 @@ app = FastAPI()
 
 # cors fastapi (policy) → https://fastapi.tiangolo.com/tutorial/cors/
 # origins = ['*'] # '*' → todos podem fazer requisição
-origins = ['http://127.0.0.1:5002']
+origins = ['http://127.0.0.1:5001']
 
 app.add_middleware(
     CORSMiddleware,
