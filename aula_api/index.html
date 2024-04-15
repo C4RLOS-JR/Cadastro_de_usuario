@@ -33,13 +33,14 @@
             <input class="form-control" type="password" id="senha" placeholder="Digite sua senha" required>
             <br>
             <button onclick="cadastrar()" class="btn btn-success btn-sm" id="botao">Cadastrar</button>
+            <br><br>
+            <div id="mensagem"></div>
           </div>
         <div class="col-sm">
         
         </div>
       </div>
 
-      <div id="mensagem" class="alert "></div>
       
     </div>
     
@@ -58,7 +59,6 @@
           url: urle,
           method: 'post',
           success: function (resposta) {
-            console.log(resposta)
             var msg = document.getElementById('mensagem')
 
             if (resposta['msg'] == 0){
