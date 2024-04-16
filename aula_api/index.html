@@ -11,34 +11,51 @@
   </head>
 
   <body>
+    <br>
     <div class="container">
       <div class="row">
-        <div class="col-sm">
 
-        </div>
-          <div class="col-sm">
-            <br>
-            <div style="text-align: center;">
-              <h1>Cadastre-se</h1>
-            </div>
-          
-            <hr>
-            <p>Usuário:</p>
-            <input class="form-control" type="text" id="usuario" placeholder="Digite seu nome de usuário">
-            <br>
-            <p>Email:</p>
-            <input class="form-control" type="email" id="email" placeholder="Digite seu email">
-            <br>
-            <p>Senha:</p>
-            <input class="form-control" type="password" id="senha" placeholder="Digite sua senha">
-            <br>
-            <button onclick="cadastrar()" class="btn btn-success btn-sm" id="botao">Cadastrar</button>
-            <br><br>
-            <div id="mensagem"></div>
+        <div class="col-sm" style="border: 1px solid black;">
+          <br>
+          <div style="text-align: center;">
+            <h1>Cadastrar</h1>
           </div>
-        <div class="col-sm">
         
+          <p>Usuário:</p>
+          <input class="form-control" type="text" id="usuario" placeholder="Digite seu nome de usuário">
+          <br>
+          <p>Email:</p>
+          <input class="form-control" type="email" id="email" placeholder="Digite seu email">
+          <br>
+          <p>Senha:</p>
+          <input class="form-control" type="password" id="senha" placeholder="Digite sua senha">
+          <br>
+          <button onclick="cadastrar(), location.reload()" class="btn btn-success btn-sm" id="botao">Cadastrar</button>
+          <br><br>
+          <div id="mensagem"></div>
         </div>
+
+        <div style="width: 10%; text-align: center;">
+          <br><br>
+          <h4>← OU →</OU></h4>
+        </div>
+
+
+        <div class="col-sm" style="border: 1px solid black;">
+          <br>
+          <div style="text-align: center;">
+            <h1>Logar</h1>
+          </div>
+          
+          <p>Email:</p>
+          <input class="form-control" type="email" id="email_logar" placeholder="Digite seu email">
+          <br>
+          <p>Senha:</p>
+          <input class="form-control" type="password" id="senha_logar" placeholder="Digite sua senha">
+          <br>
+          <button onclick="logar(), location.reload()" class="btn btn-primary btn-sm" id="botao">Logar</button>
+        </div>
+        
       </div>
 
       
@@ -47,7 +64,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-      var mensagem;
 
       function cadastrar() {
         var usuario = document.getElementById('usuario').value;
@@ -59,20 +75,38 @@
           url: urle,
           method: 'post',
           success: function (resposta) {
-            console.log(resposta)
-            var msg = document.getElementById('mensagem')
-
+            
             if (resposta['msg'] == 0){
-              mensagem = 'Usuário cadastrado com sucesso!'
+              alert('Usuário cadastrado com sucesso!')
             } else if (resposta['msg'] == 1){
-              mensagem = 'A senha tem que conter mais de 6 digitos!'
+              alert('A senha tem que conter mais de 6 digitos!')
             } else if (resposta['msg'] == 2){
-              mensagem = 'Usuário já cadastrado no sistema!'
+              alert('Usuário já cadastrado no sistema!')
             } else if (resposta['msg'] == 3) {
-              mensagem = 'Erro interno do sistema! → ' + resposta['erro']
+              alert('Erro interno do sistema! → ' + resposta['erro'])
             }
 
-            msg.innerHTML = mensagem
+          }
+        })
+      }
+
+      function logar() {
+        var email = document.getElementById('email_logar').value;
+        var senha = document.getElementById('senha_logar').value;
+        urle = 'http://127.0.0.1:5000/login?email=' + email + '&senha=' + senha;
+
+        $.ajax({
+          url:urle,
+          method: 'post',
+          success: function(resposta) {
+            console.log(resposta)
+
+            if (resposta['msg'] == 0){
+              alert('Login efetuado com sucesso!\n\nSeja bem vindo ' + resposta['nome'])
+            } else if (resposta['msg'] == 1){
+              alert('Email ou senha incorretos!\n\nTente novamente ou cadastre-se!')              
+            }
+
           }
         })
       }

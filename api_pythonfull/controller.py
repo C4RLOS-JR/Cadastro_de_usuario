@@ -47,6 +47,22 @@ def cadastro(usuario: str, email: str, senha: str):
     return {'msg': 0}
   except Exception as erro:
     return {'msg': 3, 'erro': erro}
+  
+
+@app.post('/login')
+def login(email: str, senha: str):
+
+  senha = sha256(senha.encode()).hexdigest()
+  session = conectaBanco()
+  usuarioExiste = session.query(Pessoa).filter_by(email=email, senha=senha).all()
+
+  if usuarioExiste:
+    for i in usuarioExiste:
+      usuario = i.usuario
+    return {'msg': 0, 'nome': usuario}
+  else:
+    return {'msg': 1}
+  
 
 if __name__ == '__main__':
   uvicorn.run('controller:app', port=5000, reload=True, access_log=False)
