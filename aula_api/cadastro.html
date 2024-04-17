@@ -34,7 +34,7 @@
           <input class="form-control" type="password" id="senha" placeholder="Digite sua senha">
           <br>
           <button onclick="cadastrar(), location.reload()" class="btn btn-success btn-sm" id="botao">Cadastrar</button>
-          <a href="http://127.0.0.1:5002/logar" style="margin-left: 20px;">Logar-se</a>
+          <a href="http://127.0.0.1:5001/logar" style="margin-left: 20px;">Logar-se</a>
           <br><br>
           <div id="mensagem"></div>
         </div>
@@ -63,34 +63,13 @@
             
             if (resposta['msg'] == 0){
               alert('Usuário cadastrado com sucesso!\n\nFaça o login para entrar...');
-              window.location.href = "http://127.0.0.1:5002/logar";              
+              window.location.href = "http://127.0.0.1:5001/logar";              
             } else if (resposta['msg'] == 1){
               alert('A senha tem que conter mais de 6 digitos!');
             } else if (resposta['msg'] == 2){
               alert('Usuário já cadastrado no sistema!');
             } else if (resposta['msg'] == 3) {
               alert('Erro interno do sistema! → ' + resposta['erro']);
-            }
-
-          }
-        })
-      }
-
-      function logar() {
-        var email = document.getElementById('email_logar').value;
-        var senha = document.getElementById('senha_logar').value;
-        urle = 'http://127.0.0.1:5000/login?email=' + email + '&senha=' + senha;
-
-        $.ajax({
-          url:urle,
-          method: 'post',
-          success: function(resposta) {
-            console.log(resposta)
-
-            if (resposta['msg'] == 0){
-              alert('Login efetuado com sucesso!\n\nSeja bem vindo ' + resposta['nome'])
-            } else if (resposta['msg'] == 1){
-              alert('Email ou senha incorretos!\n\nTente novamente ou cadastre-se!')              
             }
 
           }
