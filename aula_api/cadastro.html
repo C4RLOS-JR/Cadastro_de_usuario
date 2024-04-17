@@ -15,15 +15,13 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-sm" style="border: 1px solid black;">
+        <div class="col-sm"></div>
+
+        <div class="col-sm">
           <br>
           <div style="text-align: center;">
             <h1>Cadastrar</h1>
-
-
-            <a href="http://127.0.0.1:5001/logar">Logar</a>
-          
-          
+            <hr>
           </div>
         
           <p>Usuário:</p>
@@ -36,30 +34,12 @@
           <input class="form-control" type="password" id="senha" placeholder="Digite sua senha">
           <br>
           <button onclick="cadastrar(), location.reload()" class="btn btn-success btn-sm" id="botao">Cadastrar</button>
+          <a href="http://127.0.0.1:5002/logar" style="margin-left: 20px;">Logar-se</a>
           <br><br>
           <div id="mensagem"></div>
         </div>
 
-        <div style="width: 10%; text-align: center;">
-          <br><br>
-          <h4>← OU →</OU></h4>
-        </div>
-
-
-        <div class="col-sm" style="border: 1px solid black;">
-          <br>
-          <div style="text-align: center;">
-            <h1>Logar</h1>
-          </div>
-          
-          <p>Email:</p>
-          <input class="form-control" type="email" id="email_logar" placeholder="Digite seu email">
-          <br>
-          <p>Senha:</p>
-          <input class="form-control" type="password" id="senha_logar" placeholder="Digite sua senha">
-          <br>
-          <button onclick="logar(), location.reload()" class="btn btn-primary btn-sm" id="botao">Logar</button>
-        </div>
+        <div class="col-sm"></div>
         
       </div>
 
@@ -82,13 +62,14 @@
           success: function (resposta) {
             
             if (resposta['msg'] == 0){
-              alert('Usuário cadastrado com sucesso!')
+              alert('Usuário cadastrado com sucesso!\n\nFaça o login para entrar...');
+              window.location.href = "http://127.0.0.1:5002/logar";              
             } else if (resposta['msg'] == 1){
-              alert('A senha tem que conter mais de 6 digitos!')
+              alert('A senha tem que conter mais de 6 digitos!');
             } else if (resposta['msg'] == 2){
-              alert('Usuário já cadastrado no sistema!')
+              alert('Usuário já cadastrado no sistema!');
             } else if (resposta['msg'] == 3) {
-              alert('Erro interno do sistema! → ' + resposta['erro'])
+              alert('Erro interno do sistema! → ' + resposta['erro']);
             }
 
           }
