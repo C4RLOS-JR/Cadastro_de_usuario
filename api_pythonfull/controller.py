@@ -59,7 +59,7 @@ def login(email: str, senha: str):
   if usuarioExiste:
     while True:
       token = token_hex(25)
-      tokenExiste = session.query(Tokens).filter_by(token=token)
+      tokenExiste = session.query(Tokens).filter_by(token=token).all()
       if not tokenExiste:
         pessoaExiste = session.query(Tokens).filter_by(id_pessoa=usuarioExiste[0].id).all()
         if not pessoaExiste:
@@ -67,6 +67,7 @@ def login(email: str, senha: str):
           session.add(addToken)
         else:
           pessoaExiste[0].token = token
+          
         session.commit()
         break
     return {'msg': 0, 'nome': usuarioExiste[0].usuario}
