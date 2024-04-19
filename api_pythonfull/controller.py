@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Pessoa
+from models import Base, Pessoa, Tokens
 from secrets import token_hex
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
@@ -37,7 +37,7 @@ def cadastro(usuario: str, email: str, senha: str):
 
   if usuarioExiste:
     return {'msg': 2}
-
+  
   try:
     novoUsuario = Pessoa(usuario=usuario,
                          email=email,
@@ -57,9 +57,19 @@ def login(email: str, senha: str):
   usuarioExiste = session.query(Pessoa).filter_by(email=email, senha=senha).all()
 
   if usuarioExiste:
-    for i in usuarioExiste:
-      usuario = i.usuario
-    return {'msg': 0, 'nome': usuario}
+    while True:
+      token = token_hex(25)
+      tokenExiste = session.query(Tokens).filter_by(token=token)
+      if not tokenExiste:
+        pessoaExiste = session.query(Tokens).filter_by(id_pessoa=usuarioExiste[0].id).all()
+        if not pessoaExiste:
+          addToken = Tokens(id_pessoa=usuarioExiste[0].id, token=token)
+          session.add(addToken)
+        else:
+          pessoaExiste[0].token = token
+        session.commit()
+        break
+    return {'msg': 0, 'nome': usuarioExiste[0].usuario}
   else:
     return {'msg': 1}
   
