@@ -15,7 +15,7 @@
     <br>
     <div class="container">
       <div class="row">
-
+        
         <div class="col-sm"></div>
 
         <div class="col-sm">
@@ -30,45 +30,49 @@
           <br>
           <p>Senha:</p>
           <input class="form-control" type="password" id="senha_logar" placeholder="Digite sua senha">
-          <br>
-          <button onclick="logar(), location.reload()" class="btn btn-primary btn-sm" id="botao">Logar</button>
-          <a href="http://127.0.0.1:5001" style="margin-left: 20px;">Cadastrar-se</a>
+          <br><br>
+          <button onclick="logar(), location.reload()" class="btn btn-primary btn-sm" style="width: 100%;">Logar</button>
+          <br><br>
+          <a href="http://127.0.0.1:5001/cadastrar" style="text-decoration: none;">Cadastrar</a>
         </div>
 
         <div class="col-sm"></div>
-
+        
       </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+      window.onload = function () {
+        alert('Antes de carregar!')
+      };
 
-        function logar() {
-          var email = document.getElementById('email_logar').value;
-          var senha = document.getElementById('senha_logar').value;
-          urle = 'http://127.0.0.1:5000/login?email=' + email + '&senha=' + senha;
+      function logar() {
+        var email = document.getElementById('email_logar').value;
+        var senha = document.getElementById('senha_logar').value;
+        urle = 'http://127.0.0.1:5000/login?email=' + email + '&senha=' + senha;
 
-          $.ajax({
-            url:urle,
-            method: 'post',
-            success: function(resposta) {
+        $.ajax({
+          url:urle,
+          method: 'post',
+          success: function(resposta) {
 
-              if (resposta['msg'] == 0){
-                alert('Login efetuado com sucesso!\n\nSeja bem vindo ' + resposta['nome']);
-                localStorage.setItem('token', resposta['token']);
-                // console.log(localStorage.getItem('token'))
-                // alert()
+            if (resposta['msg'] == 0){
+              alert('Login efetuado com sucesso!\n\nSeja bem vindo ' + resposta['nome']);
+              localStorage.setItem('token', resposta['token']);
+              // console.log(localStorage.getItem('token'))
+              // alert()
 
-                window.location.href = "http://127.0.0.1:5001/home";
-                
-              } else if (resposta['msg'] == 1){
-                alert('Email ou senha incorretos!\n\nTente novamente ou cadastre-se!');        
-              }
-
+              window.location.href = "http://127.0.0.1:5001/home";
+              
+            } else if (resposta['msg'] == 1){
+              alert('Email ou senha incorretos!\n\nTente novamente ou cadastre-se!');        
             }
-          })
-        }
+
+          }
+        })
+      }
 
     </script>
 

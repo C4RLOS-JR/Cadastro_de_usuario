@@ -6,6 +6,7 @@ from secrets import token_hex
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from hashlib import sha256
+from datetime import datetime, timedelta
 
 app = FastAPI()
 
@@ -66,8 +67,9 @@ def login(email: str, senha: str):
           addToken = Tokens(id_pessoa=usuarioExiste[0].id, token=token)
           session.add(addToken)
           
-        else:
-          pessoaExiste[0].token = token
+        # else:
+          # expirou = timedelta(datetime.now()) - pessoaExiste[0].data
+        #   pessoaExiste[0].token = token
           
         session.commit()
         break
