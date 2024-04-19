@@ -1,8 +1,11 @@
 def app(amb, start_response):
   cadastro = open('cadastro.html', 'rb')
   login = open('login.html', 'rb')
+  home = open('home.html', 'rb')
   if 'logar' in amb['PATH_INFO']:
     data = login.read()
+  elif 'home' in amb['PATH_INFO']:
+    data = home.read()
   else:
     data = cadastro.read()
   status = '200 ok'

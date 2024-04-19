@@ -65,12 +65,13 @@ def login(email: str, senha: str):
         if not pessoaExiste:
           addToken = Tokens(id_pessoa=usuarioExiste[0].id, token=token)
           session.add(addToken)
+          
         else:
           pessoaExiste[0].token = token
           
         session.commit()
         break
-    return {'msg': 0, 'nome': usuarioExiste[0].usuario}
+    return {'msg': 0, 'nome': usuarioExiste[0].usuario, 'token': token}
   else:
     return {'msg': 1}
   
