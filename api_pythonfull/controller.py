@@ -66,17 +66,19 @@ def login(email: str, senha: str):
         if not pessoaExiste:
           addToken = Tokens(id_pessoa=usuarioExiste[0].id, token=token)
           session.add(addToken)
-          
-        # else:
-          # expirou = timedelta(datetime.now()) - pessoaExiste[0].data
-        #   pessoaExiste[0].token = token
-          
-        session.commit()
+          session.commit()
+        else:
+          expirou = datetime.now() - pessoaExiste[0].data
+          if expirou.days >= 1:
+            pessoaExiste[0].token = token
+          else:
+            return {'msg': 2, 'email': usuarioExiste[0].email, 'senha': usuarioExiste[0].senha}
         break
-    return {'msg': 0, 'nome': usuarioExiste[0].usuario, 'token': token}
+    return {'msg': 0, 'nome': usuarioExiste[0].usuario, 'token': pessoaExiste[0].token}
+  
   else:
     return {'msg': 1}
-  
+    
 
 if __name__ == '__main__':
   uvicorn.run('controller:app', port=5000, reload=True, access_log=False)
