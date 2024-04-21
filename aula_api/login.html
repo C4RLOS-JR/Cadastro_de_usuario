@@ -44,10 +44,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      window.onload = function () {
-        // pegar o token do localstorage e enviar para uma função token(criar) no controller
-        alert('Antes de carregar!')
-      };
+      
+      window.onload = function token() {
+        var token_LS = localStorage.getItem('token')
+        urle = 'http://127.0.0.1:5000/token?token_LS=' + token_LS;
+
+        $.ajax({
+          url: urle,
+          method: 'post',
+          success: function (resposta) {
+            console.log(resposta['msg']);
+            if (resposta['msg'] == 0) {
+              window.location.href = "http://127.0.0.1:5002/home";
+            }
+          }
+        })
+      }
 
       function logar() {
         var email = document.getElementById('email_logar').value;
@@ -58,14 +70,12 @@
           url:urle,
           method: 'post',
           success: function(resposta) {
-
+            
             if (resposta['msg'] == 0){
               alert('Login efetuado com sucesso!\n\nSeja bem vindo ' + resposta['nome']);
               localStorage.setItem('token', resposta['token']);
-              // console.log(localStorage.getItem('token'))
-              // alert()
 
-              window.location.href = "http://127.0.0.1:5001/home";
+              window.location.href = "http://127.0.0.1:5002/home";
               
             } else if (resposta['msg'] == 1){
               alert('Email ou senha incorretos!\n\nTente novamente ou cadastre-se!');        

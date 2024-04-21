@@ -33,7 +33,7 @@
           <br><br>
           <button onclick="cadastrar(), location.reload()" class="btn btn-success btn-sm" style="width: 100%;">Cadastrar</button>
           <br><br>
-          <a href="http://127.0.0.1:5001/logar" style="text-decoration: none;">Logar</a>
+          <a href="http://127.0.0.1:5002/logar" style="text-decoration: none;">Logar</a>
         </div>
 
         <div class="col-sm"></div>
@@ -57,7 +57,7 @@
             
             if (resposta['msg'] == 0){
               alert('Usuário cadastrado com sucesso!\n\nFaça o login para entrar...');
-              window.location.href = "http://127.0.0.1:5001/logar";              
+              window.location.href = "http://127.0.0.1:5002/logar";              
             } else if (resposta['msg'] == 1){
               alert('A senha tem que conter mais de 6 digitos!');
             } else if (resposta['msg'] == 2){

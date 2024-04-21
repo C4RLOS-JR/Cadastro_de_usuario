@@ -27,6 +27,19 @@ def conectaBanco():
   Session = sessionmaker(bind=engine)
   return Session()
 
+
+@app.post('/token')
+def token(token_LS: str):
+  session = conectaBanco()
+  tokenExiste = session.query(Tokens).filter_by(token=token_LS).all()
+  if tokenExiste:
+    expirou = datetime.now() - tokenExiste[0].data
+    if expirou.days < 1:
+      
+
+      return {'msg': 0}
+    
+
 @app.post('/cadastro')
 def cadastro(usuario: str, email: str, senha: str):
   if len(senha) < 6:
@@ -68,11 +81,8 @@ def login(email: str, senha: str):
           session.add(addToken)
           session.commit()
         else:
-          expirou = datetime.now() - pessoaExiste[0].data
-          if expirou.days >= 1:
             pessoaExiste[0].token = token
-          else:
-            return {'msg': 2, 'email': usuarioExiste[0].email, 'senha': usuarioExiste[0].senha}
+            session.commit()
         break
     return {'msg': 0, 'nome': usuarioExiste[0].usuario, 'token': pessoaExiste[0].token}
   
