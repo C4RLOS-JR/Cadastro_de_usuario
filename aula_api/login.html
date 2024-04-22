@@ -53,12 +53,13 @@
           url: urle,
           method: 'post',
           success: function (resposta) {
-            console.log(resposta['msg']);
             if (resposta['msg'] == 0) {
-              window.location.href = "http://127.0.0.1:5002/home";
-            }
+              window.location.href = "http://127.0.0.1:5001/home";
+            } else if (resposta['msg'] == 1) {
+              localStorage.removeItem('token');
+            };
           }
-        })
+        });
       }
 
       function logar() {
@@ -75,14 +76,14 @@
               alert('Login efetuado com sucesso!\n\nSeja bem vindo ' + resposta['nome']);
               localStorage.setItem('token', resposta['token']);
 
-              window.location.href = "http://127.0.0.1:5002/home";
+              window.location.href = "http://127.0.0.1:5001/home";
               
             } else if (resposta['msg'] == 1){
               alert('Email ou senha incorretos!\n\nTente novamente ou cadastre-se!');        
-            }
+            };
 
           }
-        })
+        });
       }
 
     </script>

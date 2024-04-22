@@ -34,12 +34,13 @@ def token(token_LS: str):
   tokenExiste = session.query(Tokens).filter_by(token=token_LS).all()
   if tokenExiste:
     expirou = datetime.now() - tokenExiste[0].data
-    if expirou.days < 1:
-      
+    if expirou.days <= 3: # verifica se faz mais de 3 dias desde o último acesso
+      tokenExiste[0].data = datetime.now()  # renova a validade do token
+      session.commit()
+      return {'msg': 0} # permite o acesso do usuário sem fazer login
+  return {'msg': 1} # apaga o token do localStorage e o usuário precisa fazer um novo login
 
-      return {'msg': 0}
     
-
 @app.post('/cadastro')
 def cadastro(usuario: str, email: str, senha: str):
   if len(senha) < 6:
