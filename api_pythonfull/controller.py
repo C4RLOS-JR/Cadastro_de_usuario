@@ -6,13 +6,13 @@ from secrets import token_hex
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from hashlib import sha256
-from datetime import datetime, timedelta
+from datetime import datetime
 
 app = FastAPI()
 
 # cors fastapi (policy) → https://fastapi.tiangolo.com/tutorial/cors/
 # origins = ['*'] # '*' → todos podem fazer requisição
-origins = ['http://127.0.0.1:5001', 'http://127.0.0.1:5002', 'http://127.0.0.1:5003']
+origins = 'http://127.0.0.1:5001'
 
 app.add_middleware(
     CORSMiddleware,
@@ -21,6 +21,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def conectaBanco():
   engine = create_engine('sqlite:///sqlite.db', echo=False)
@@ -66,7 +67,6 @@ def cadastro(usuario: str, email: str, senha: str):
 
 @app.post('/login')
 def login(email: str, senha: str):
-
   senha = sha256(senha.encode()).hexdigest()
   session = conectaBanco()
   usuarioExiste = session.query(Pessoa).filter_by(email=email, senha=senha).all()
@@ -80,12 +80,11 @@ def login(email: str, senha: str):
         if not pessoaExiste:
           addToken = Tokens(id_pessoa=usuarioExiste[0].id, token=token)
           session.add(addToken)
-          session.commit()
         else:
-            pessoaExiste[0].token = token
-            session.commit()
+          pessoaExiste[0].token = token
+        session.commit()
         break
-    return {'msg': 0, 'nome': usuarioExiste[0].usuario, 'token': pessoaExiste[0].token}
+    return {'msg': 0, 'nome': usuarioExiste[0].usuario, 'token': token}
   
   else:
     return {'msg': 1}

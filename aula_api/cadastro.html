@@ -54,7 +54,6 @@
           url: urle,
           method: 'post',
           success: function (resposta) {
-            
             if (resposta['msg'] == 0){
               alert('Usuário cadastrado com sucesso!\n\nFaça o login para entrar...');
               window.location.href = "http://127.0.0.1:5001/logar";              
@@ -64,11 +63,10 @@
               alert('Usuário já cadastrado no sistema!');
             } else if (resposta['msg'] == 3) {
               alert('Erro interno do sistema! → ' + resposta['erro']);
-            }
-
+            };
           }
-        })
-      }
+        });
+      };
     </script>
 
   </body>

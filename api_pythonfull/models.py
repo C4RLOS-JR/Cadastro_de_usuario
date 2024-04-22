@@ -16,12 +16,14 @@ class Pessoa(Base):
   email = Column(String(100))
   senha = Column(String(16))
 
+
 class Tokens(Base):
   __tablename__='Tokens'
   id = Column(Integer, primary_key=True)
   id_pessoa = Column(Integer, ForeignKey('Pessoa.id'))
   token = Column(String(50))
   data = Column(DateTime, default=datetime.datetime.now())
+
 
 if __name__ == '__main__':
   Base.metadata.create_all(engine)

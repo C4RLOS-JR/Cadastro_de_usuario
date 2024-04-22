@@ -60,7 +60,7 @@
             };
           }
         });
-      }
+      };
 
       function logar() {
         var email = document.getElementById('email_logar').value;
@@ -71,20 +71,16 @@
           url:urle,
           method: 'post',
           success: function(resposta) {
-            
             if (resposta['msg'] == 0){
               alert('Login efetuado com sucesso!\n\nSeja bem vindo ' + resposta['nome']);
               localStorage.setItem('token', resposta['token']);
-
               window.location.href = "http://127.0.0.1:5001/home";
-              
             } else if (resposta['msg'] == 1){
               alert('Email ou senha incorretos!\n\nTente novamente ou cadastre-se!');        
             };
-
           }
         });
-      }
+      };
 
     </script>
 
