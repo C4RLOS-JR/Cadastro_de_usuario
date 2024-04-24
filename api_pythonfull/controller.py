@@ -32,11 +32,11 @@ def conectaBanco():
 @app.post('/token')
 def token(token_LS: str):
   session = conectaBanco()
-  tokenExiste = session.query(Tokens).filter_by(token=token_LS).all()
-  if tokenExiste:
-    expirou = datetime.now() - tokenExiste[0].data
+  token_existe = session.query(Tokens).filter_by(token=token_LS).all()
+  if token_existe:
+    expirou = datetime.now() - token_existe[0].data
     if expirou.days <= 3: # verifica se faz mais de 3 dias desde o último acesso
-      tokenExiste[0].data = datetime.now()  # renova a validade do token
+      token_existe[0].data = datetime.now()  # renova a validade do token
       session.commit()
       return {'msg': 0} # permite o acesso do usuário sem fazer login
   return {'msg': 1} # apaga o token do localStorage e o usuário precisa fazer um novo login
@@ -49,16 +49,16 @@ def cadastro(usuario: str, email: str, senha: str):
   
   senha = sha256(senha.encode()).hexdigest()
   session = conectaBanco()
-  usuarioExiste = session.query(Pessoa).filter_by(email=email, senha=senha).all()
+  usuario_existe = session.query(Pessoa).filter_by(email=email, senha=senha).all()
 
-  if usuarioExiste:
+  if usuario_existe:
     return {'msg': 2}
   
   try:
-    novoUsuario = Pessoa(usuario=usuario,
-                         email=email,
-                         senha=senha)
-    session.add(novoUsuario)
+    novo_usuario = Pessoa(usuario=usuario,
+                          email=email,
+                          senha=senha)
+    session.add(novo_usuario)
     session.commit()
     return {'msg': 0}
   except Exception as erro:
@@ -69,22 +69,22 @@ def cadastro(usuario: str, email: str, senha: str):
 def login(email: str, senha: str):
   senha = sha256(senha.encode()).hexdigest()
   session = conectaBanco()
-  usuarioExiste = session.query(Pessoa).filter_by(email=email, senha=senha).all()
+  usuario_existe = session.query(Pessoa).filter_by(email=email, senha=senha).all()
 
-  if usuarioExiste:
+  if usuario_existe:
     while True:
       token = token_hex(25)
-      tokenExiste = session.query(Tokens).filter_by(token=token).all()
-      if not tokenExiste:
-        pessoaExiste = session.query(Tokens).filter_by(id_pessoa=usuarioExiste[0].id).all()
-        if not pessoaExiste:
-          addToken = Tokens(id_pessoa=usuarioExiste[0].id, token=token)
+      token_existe = session.query(Tokens).filter_by(token=token).all()
+      if not token_existe:
+        pessoa_existe = session.query(Tokens).filter_by(id_pessoa=usuario_existe[0].id).all()
+        if not pessoa_existe:
+          addToken = Tokens(id_pessoa=usuario_existe[0].id, token=token)
           session.add(addToken)
         else:
-          pessoaExiste[0].token = token
+          pessoa_existe[0].token = token
         session.commit()
         break
-    return {'msg': 0, 'nome': usuarioExiste[0].usuario, 'token': token}
+    return {'msg': 0, 'nome': usuario_existe[0].usuario, 'token': token}
   
   else:
     return {'msg': 1}
